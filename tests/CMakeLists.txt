@@ -2,13 +2,9 @@ cmake_minimum_required(VERSION 3.2)
 project(run_unit_tests LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-ggdb -fprofile-arcs -ftest-coverage")
-
-SET(CMAKE_CXX_FLAGS "-g ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-g -ggdb -fprofile-arcs -ftest-coverage")
 
 find_package(GTest REQUIRED)
-
-include(${CMAKE_CURRENT_LIST_DIR}/../src/my_class/my_class.cmake)
 
 include(${CMAKE_CURRENT_LIST_DIR}/my_class/my_class_test.cmake)
 
@@ -18,16 +14,17 @@ file(GLOB SRC "${CMAKE_CURRENT_LIST_DIR}/../src/*.cpp" "${CMAKE_CURRENT_LIST_DIR
 list(REMOVE_ITEM SRC "${CMAKE_CURRENT_LIST_DIR}/../src/main.cpp")
 
 add_executable(
-        run_unit_tests
+        ${PROJECT_NAME}
         ${HEADERS}
         ${SRC}
-        ${MY_CLASS}
         test.cpp
         ${MY_CLASS_TEST}
 )
 
+target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/../src")
+
 target_link_libraries(
-        run_unit_tests
+        ${PROJECT_NAME}
         gtest
         gtest_main
         pthread
@@ -35,4 +32,4 @@ target_link_libraries(
 
 enable_testing()
 
-add_test(run_unit_tests run_unit_tests)
+add_test(run_unit_tests ${PROJECT_NAME})
