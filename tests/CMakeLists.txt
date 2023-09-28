@@ -25,9 +25,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..
 
 target_link_libraries(
         ${PROJECT_NAME}
-        gtest
-        gtest_main
-        pthread
+        gtest::gtest
 )
 
 enable_testing()
